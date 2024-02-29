@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15.6-bullseye
+    env_file: .env.example
+    expose:
+      - "5432:5432"
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - infra
+      - test
+
+  mypy-check:
+    image: ${APPLICATION_IMAGE:-app:dev}
+    command: ["poetry", "run", "mypy", "."]
+    profiles:
+      - lint
+
+  ruff-check:
+    image: ${APPLICATION_IMAGE:-app:dev}
+    command: ["poetry", "run", "ruff", "check", "."]
+    profiles:
+      - lint
+
+  test:
+    image: ${APPLICATION_IMAGE:-app:dev}
+    command: ["poetry", "run", "pytest", "tests"]
+    env_file: .env.example
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - test
