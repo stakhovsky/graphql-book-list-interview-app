@@ -23,6 +23,21 @@ class Context(strawberry_fastapi.BaseContext):
 class Query:
 
     @strawberry.field
+    async def authors(
+        self,
+        info: strawberry_types.Info[Context, None],
+        limit: int = constant.MAX_PER_PAGE,
+        offset: int = 0,
+    ) -> entity.PaginationWindow[entity.Author]:
+        return await usecase.index_authors(
+            db=info.context.db,
+            pagination=entity.PaginationConfig(
+                limit=limit,
+                offset=offset,
+            ),
+        )
+
+    @strawberry.field
     async def books(
         self,
         info: strawberry_types.Info[Context, None],
