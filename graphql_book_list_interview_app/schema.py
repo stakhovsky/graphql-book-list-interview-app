@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from strawberry.fastapi import BaseContext, GraphQLRouter
 from databases import Database
 
-from settings import Settings
+from graphql_book_list_interview_app.settings import Settings
 
 
 class Context(BaseContext):
