@@ -1,23 +1,25 @@
-TODO:
-- проставь энвы (см. .env.example)
-- запусти постгрю (тестилось на 15й версии, но другая тоже подойдет) и создай базу
-- прогони миграции
-- доделай ручку, к которой написан TODO комментарий
+# graphql-book-list-interview-app
 
-Как запустить приложение, прогнать линтер и миграции - см. Makefile
+Example project that provides dummy read-only graphql API.
 
-За помощью обращайся к чему угодно, но начать лучше с документации:
-- [poetry](https://python-poetry.org/)
-- [yoyo](https://ollycope.com/software/yoyo/latest/)
-- [strawberry](https://strawberry.rocks/docs)
-- [graphql](https://graphql.org/learn/)
-- [fastapi](https://fastapi.tiangolo.com/)
-- [asyncpg](https://magicstack.github.io/asyncpg/current/)
-- [ruff](https://docs.astral.sh/ruff/)
-- [mypy](https://mypy.readthedocs.io/en/stable/getting_started.html)
+## Development
 
-Мы знаем, что наше тестовое может решить (или помочь решить) ChatGPT.
-Мы ок с использованием вспомогательных инструментов для разработки,
-но, пожалуйста, не делайте этого бездумно.
+Development is aimed to use on-host `python` and containerized environment.
 
-А есть ли в коде баги? Кто знает...
+So you have to install `python 3.12` (and other required packages) locally (see [pyenv](https://github.com/pyenv/pyenv)).
+
+### Environment and requirements
+
+- `python 3.12`, `poetry`, `strawberry` and so on (see [pyproject.toml](./pyproject.toml) and [Dockerfile](./Dockerfile))
+- `postgresql 15` (see [docker-compose.yml](./docker-compose.yml))
+- `docker 24.0.x+` with `compose` plugin
+
+### Useful commands
+
+> See [Makefile](./Makefile)
+
+- `make run` - run local development server
+- `make lint` - linting
+- `make migrate` - run migrations for db
+- `docker compose --profile infra up` - run project infrastructure
+- `python -m pytest`/`poetry run pytest` - run tests
