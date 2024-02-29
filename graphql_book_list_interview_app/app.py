@@ -1,5 +1,6 @@
 import contextlib
 import functools
+import typing
 
 import databases
 import fastapi
@@ -42,8 +43,11 @@ async def lifespan(
             await db.disconnect()
 
 
-def make_app() -> fastapi.FastAPI:
-    config = settings.Settings()  # type: ignore[call-arg]
+def make_app(
+    config: typing.Optional[settings.Settings] = None,
+) -> fastapi.FastAPI:
+    if config is None:
+        config = settings.Settings()  # type: ignore[call-arg]
     app = fastapi.FastAPI(
         title=version.__app__,
         version=version.__version__,
