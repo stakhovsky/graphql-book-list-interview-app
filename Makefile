@@ -2,7 +2,7 @@ PKG=graphql_book_list_interview_app
 
 
 run:
-	poetry run uvicorn $(PKG).schema:app --reload
+	poetry run uvicorn --factory $(PKG).app:make_app --reload
 
 fmt:
 	ruff check -s --fix --exit-zero .
