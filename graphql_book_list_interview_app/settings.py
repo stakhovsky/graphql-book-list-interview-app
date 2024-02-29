@@ -1,10 +1,21 @@
-import pydantic
-from pydantic_settings import BaseSettings
+from pydantic_settings import (
+    BaseSettings,
+    SettingsConfigDict,
+)
 
 
 class Settings(BaseSettings):
-    DB_USER: str = pydantic.Field(alias="POSTGRES_USER")
-    DB_PASSWORD: str = pydantic.Field(alias="POSTGRES_PASSWORD")
-    DB_SERVER: str = pydantic.Field(alias="POSTGRES_HOST")
-    DB_PORT: int = pydantic.Field(alias="POSTGRES_PORT")
-    DB_NAME: str = pydantic.Field(alias="POSTGRES_DB_NAME")
+    user: str
+    password: str
+    host: str
+    port: int
+    db: str
+
+    model_config = SettingsConfigDict(
+        env_prefix='POSTGRES_'
+    )
+
+    @property
+    def db_dsn(self) -> str:
+        proto = "postgresql+asyncpg"
+        return f"{proto}://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"

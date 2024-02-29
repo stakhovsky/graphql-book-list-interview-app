@@ -48,17 +48,9 @@ class Query:
         return []
 
 
-
-CONN_TEMPLATE = "postgresql+asyncpg://{user}:{password}@{host}:{port}/{name}"
 settings = Settings()  # type: ignore
 db = Database(
-    CONN_TEMPLATE.format(
-        user=settings.DB_USER,
-        password=settings.DB_PASSWORD,
-        port=settings.DB_PORT,
-        host=settings.DB_SERVER,
-        name=settings.DB_NAME,
-    ),
+    url=settings.db_dsn,
 )
 
 @asynccontextmanager
